@@ -80,11 +80,22 @@ const cartslice = createSlice({
         findInCart.totalPrice+=findInCart.price;
       }
     },
-    deleteitem:(state,action)=>{
-      const ItemtoDelete=action.payload;
-      state.cartItems = state.cartItems.filter(item => item.id !== ItemtoDelete);
+    deleteitem: (state, action) => {
+      const itemIdToDelete = action.payload; // Expecting payload to be the ID of the item to delete
+  
+      // Find the item to delete from the cartItems array
+      const itemToDelete = state.cartItems.find(item => item.id === itemIdToDelete);
 
-    }
+      // Check if the item exists in the cart
+      if (itemToDelete) {
+          // Update the total quantity by subtracting the item's quantity
+          state.totalQuantity -= itemToDelete.quantity;
+  
+          // Filter out the item from cartItems
+          state.cartItems = state.cartItems.filter(item => item.id !== itemIdToDelete);
+      }
+  },
+  
   },
 });
 export const { additem, hideCart,showCart,SelectedItem,decreaseQuantity ,increasequanity,deleteitem} = cartslice.actions;
